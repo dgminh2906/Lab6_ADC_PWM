@@ -1,0 +1,12 @@
+main.c:82:5:main	8	static
+main.c:143:6:SystemClock_Config	88	static
+main.c:184:6:system_init	8	static
+main.c:196:6:test_LedDebug	8	static
+main.c:203:9:isButtonUp	4	static
+main.c:211:9:isButtonDown	4	static
+main.c:219:9:isButtonRight	4	static
+main.c:229:6:test_Adc	24	static
+main.c:245:6:test_Buzzer	8	static
+main.c:259:6:updateTime	8	static
+main.c:269:6:displayTime	8	static
+main.c:281:6:Error_Handler	4	static,ignoring_inline_asm
