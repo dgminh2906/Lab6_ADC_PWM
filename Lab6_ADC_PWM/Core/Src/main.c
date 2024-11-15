@@ -24,6 +24,7 @@
 #include "i2c.h"
 #include "spi.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 #include "fsmc.h"
 
@@ -110,6 +111,7 @@ int main(void)
   MX_TIM13_Init();
   MX_DMA_Init();
   MX_ADC1_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   system_init();
   led7_SetColon(1);
@@ -127,6 +129,7 @@ int main(void)
 	  test_LedDebug();
 	  test_Adc();
 	  test_Buzzer();
+	  test_Uart();
 	  ds3231_ReadTime();
 	  displayTime();
     /* USER CODE END WHILE */
@@ -188,6 +191,7 @@ void system_init(){
 	  sensor_init();
 	  buzzer_init();
 	  ds3231_init();
+	  uart_init_rs232();
 	  setTimer2(50);
 }
 
@@ -243,16 +247,36 @@ void test_Adc(){
 }
 
 void test_Buzzer(){
-	if(isButtonUp()){
-		buzzer_SetVolume(50);
-	}
+    static uint8_t buzzer_state = 0;
+    if (sensor_GetHumidity() > 70) {
+        if (buzzer_state == 0) {
+            buzzer_SetVolume(50);
+            buzzer_state = 1;
+        } else {
+            buzzer_SetVolume(0);
+            buzzer_state = 0;
+        }
+    } else {
+        buzzer_SetVolume(0);
+        buzzer_state = 0;
+    }
+}
 
-	if(isButtonDown()){
-		buzzer_SetVolume(0);
-	}
-
-	if(isButtonRight()){
-		buzzer_SetVolume(25);
+void test_Uart(){
+	uart_Rs232SendString("Power Consumption:");
+	uart_Rs232SendNum(sensor_GetPowerConsumption());
+	uart_Rs232SendString("\n");
+	uart_Rs232SendString("Light:");
+	uart_Rs232SendString(sensor_GetLightIntensity());
+	uart_Rs232SendString("\n");
+	uart_Rs232SendString("Temperature:");
+	uart_Rs232SendNum(sensor_GetTemperature());
+	uart_Rs232SendString("\n");
+	uart_Rs232SendString("Humidity:");
+	uart_Rs232SendNum(sensor_GetHumidity());
+	uart_Rs232SendString("\n");
+	if (sensor_GetHumidity() > 70){
+		uart_Rs232SendString("Humidity is too high!!!!! \n");
 	}
 }
 

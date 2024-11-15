@@ -3,7 +3,7 @@
   <FileVersion>3.0</FileVersion>
   <Workspace>
     <WorkspaceType>Single-project</WorkspaceType>
-    <WorkspacePath>E:\STM32IDE\Lab6_ADC_PWM\</WorkspacePath>
+    <WorkspacePath>E:\STM32IDE\Lab6_ADC_PWM\Lab6_ADC_PWM\</WorkspacePath>
     <underRoot>true</underRoot>
     <TrustZone>0</TrustZone>
     <HAL_Driver>C:\Users\LENOVO\STM32Cube\Repository\STM32Cube_FW_F4_V1.26.2</HAL_Driver>
