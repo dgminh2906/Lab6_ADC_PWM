@@ -42,7 +42,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Core/Inc/button.h ../Core/Inc/gpio.h ../Core/Inc/lcd.h \
  ../Core/Inc/picture.h ../Core/Inc/ds3231.h ../Core/Inc/i2c.h \
  ../Core/Inc/utils.h ../Core/Inc/sensor.h ../Core/Inc/adc.h \
- ../Core/Inc/buzzer.h
+ ../Core/Inc/buzzer.h ../Core/Inc/uart.h ../Core/Inc/usart.h
 
 ../Core/Inc/main.h:
 
@@ -163,3 +163,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core/Inc/adc.h:
 
 ../Core/Inc/buzzer.h:
+
+../Core/Inc/uart.h:
+
+../Core/Inc/usart.h:

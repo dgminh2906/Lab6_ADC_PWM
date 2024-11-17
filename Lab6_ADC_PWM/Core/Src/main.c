@@ -38,6 +38,7 @@
 #include "ds3231.h"
 #include "sensor.h"
 #include "buzzer.h"
+#include "uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -67,6 +68,7 @@ void system_init();
 void test_LedDebug();
 void test_Buzzer();
 void test_Adc();
+void test_Uart();
 void displayTime();
 void updateTime();
 /* USER CODE END PFP */
@@ -237,8 +239,8 @@ void test_Adc(){
 		lcd_ShowStr(20, 100, "Power Consumption:", RED, BLACK, 16, 0);
 		lcd_ShowFloatNum(170, 100,sensor_GetPowerConsumption(), 4, RED, BLACK, 16);
 		lcd_ShowStr(20, 120, "Light:", RED, BLACK, 16, 0);
+		lcd_Fill(170, 120, 250, 136, BLACK);
 		lcd_ShowStr(170, 120,sensor_GetLightIntensity(), RED, BLACK, 16, 0);
-		lcd_DrawRectangle(160, 120, 260, 136, BLACK);
 		lcd_ShowStr(20, 140, "Temperature:", RED, BLACK, 16, 0);
 		lcd_ShowIntNum(170, 140, sensor_GetTemperature(), 4, RED, BLACK, 16);
 		lcd_ShowStr(20, 160, "Humidity:", RED, BLACK, 16, 0);
