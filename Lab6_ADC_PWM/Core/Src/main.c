@@ -63,6 +63,8 @@
 #define ALARM 2
 
 int mode = INIT;
+int counter = 0;
+int buzzer_state = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,6 +73,7 @@ void SystemClock_Config(void);
 void system_init();
 void test_LedDebug();
 void turnonBuzzer();
+void turnoffBuzzer();
 void displayAdc();
 void sendUart();
 void sendAlarm();
@@ -134,6 +137,7 @@ int main(void) {
 		flag_timer2 = 0;
 		button_Scan();
 		test_LedDebug();
+		ds3231_ReadTime();
 		process();
 		/* USER CODE END WHILE */
 
@@ -190,6 +194,7 @@ void system_init() {
 	lcd_init();
 	sensor_init();
 	buzzer_init();
+	led7_init();
 	ds3231_init();
 	uart_init_rs232();
 	setTimer2(50);
@@ -232,26 +237,31 @@ void displayAdc() {
 	if (count_adc == 0) {
 		sensor_Read();
 		lcd_ShowStr(20, 100, "Power Consumption:", RED, BLACK, 16, 0);
-		lcd_ShowFloatNum(170, 100, sensor_GetPowerConsumption(), 4, RED, BLACK,
+		lcd_ShowFloatNum(180, 100, sensor_GetPowerConsumption(), 5, RED, BLACK,
 				16);
 		lcd_ShowStr(20, 120, "Light:", RED, BLACK, 16, 0);
-		lcd_Fill(170, 120, 250, 136, BLACK);
-		lcd_ShowStr(170, 120, sensor_GetLightIntensity(), RED, BLACK, 16, 0);
+		lcd_Fill(180, 120, 240, 136, BLACK);
+		lcd_ShowStr(180, 120, sensor_GetLightIntensity(), RED, BLACK, 16, 0);
 		lcd_ShowStr(20, 140, "Temperature:", RED, BLACK, 16, 0);
-		lcd_ShowIntNum(170, 140, sensor_GetTemperature(), 4, RED, BLACK, 16);
+		lcd_ShowFloatNum(180, 140, sensor_GetTemperature(), 4, RED, BLACK, 16);
 		lcd_ShowStr(20, 160, "Humidity:", RED, BLACK, 16, 0);
-		lcd_ShowIntNum(170, 160, sensor_GetHumidity(), 4, RED, BLACK, 16);
+		lcd_ShowFloatNum(180, 160, sensor_GetHumidity(), 4, RED, BLACK, 16);
 	}
 }
 
 void turnonBuzzer() {
-	static uint8_t buzzer_state = 0;
 	if (buzzer_state == 0) {
 		buzzer_SetVolume(50);
 		buzzer_state = 1;
 	} else {
 		buzzer_SetVolume(0);
 		buzzer_state = 0;
+	}
+}
+
+void turnoffBuzzer() {
+	if (buzzer_state == 1) {
+		buzzer_SetVolume(0);
 	}
 }
 
@@ -285,10 +295,10 @@ void updateTime() {
 }
 
 void displayTime() {
-	led7_SetDigit(ds3231_hours / 10, 1, 0);
+	led7_SetDigit(ds3231_hours / 10, 0, 0);
 	led7_SetDigit(ds3231_hours % 10, 1, 0);
-	led7_SetDigit(ds3231_min / 10, 1, 0);
-	led7_SetDigit(ds3231_min % 10, 1, 0);
+	led7_SetDigit(ds3231_min / 10, 2, 0);
+	led7_SetDigit(ds3231_min % 10, 3, 0);
 }
 
 void process() {
@@ -305,24 +315,29 @@ void process() {
 		if (sensor_GetHumidity() > 70) {
 			mode = ALARM;
 		}
+		counter++;
+		if (counter == 20){
+			counter = 0;
+			sendUart();
+		}
 		displayTime();
 		displayAdc();
-		sendUart();
+		turnoffBuzzer();
 		break;
 
 	case ALARM:
-		if (sensor_GetCurrent() <= 70) {
+		if (sensor_GetHumidity() <= 70) {
 			mode = MONITORING;
 		}
-		setTimer2(1000);
-		if (flag_timer2 == 1) {
-			setTimer2(1000);
+		counter++;
+		if (counter == 20) {
+			counter = 0;
 			sendAlarm();
+			sendUart();
 			turnonBuzzer();
 		}
 		displayTime();
 		displayAdc();
-		sendUart();
 		break;
 
 	default:

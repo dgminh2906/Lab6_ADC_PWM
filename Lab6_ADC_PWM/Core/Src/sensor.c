@@ -41,10 +41,10 @@ float sensor_GetPowerConsumption(){
 }
 
 float sensor_GetHumidity(){
-	if (adc_receive[3] < 180) return 0;
-	else if (adc_receive[3] > 3780) return 100;
+	if ((float)adc_receive[3] < 195) return 0;
+	else if ((float)adc_receive[3] > 3780) return 100;
 	else {
-		return (adc_receive[3] - 180) * 100 / (3780 - 180);
+		return ((float)adc_receive[3] - 180) * 100 / (3780 - 195);
 	}
 }
 

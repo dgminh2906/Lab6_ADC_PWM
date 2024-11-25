@@ -63,7 +63,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 
 		// turn on the receice interrupt
-//		HAL_UART_Receive_IT(&huart1, &receive_buffer1, 1);
+		HAL_UART_Receive_IT(&huart1, &receive_buffer1, 1);
 	}
 }
 
