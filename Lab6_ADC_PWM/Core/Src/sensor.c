@@ -49,6 +49,6 @@ float sensor_GetHumidity(){
 }
 
 char* sensor_GetLightIntensity(){
-	if (adc_receive[2] > 1500) return "Weak";
+	if (adc_receive[2] > 1800) return "Weak";
 	else return "Strong";
 }

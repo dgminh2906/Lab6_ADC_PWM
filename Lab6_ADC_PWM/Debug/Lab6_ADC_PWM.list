@@ -5242,21 +5242,21 @@ float sensor_GetHumidity(){
 char* sensor_GetLightIntensity(){
  8002974:	b480      	push	{r7}
  8002976:	af00      	add	r7, sp, #0
-	if (adc_receive[2] > 1500) return "Weak";
+	if (adc_receive[2] > 1800) return "Weak";
  8002978:	4b06      	ldr	r3, [pc, #24]	; (8002994 <sensor_GetLightIntensity+0x20>)
  800297a:	889b      	ldrh	r3, [r3, #4]
- 800297c:	f240 52dc 	movw	r2, #1500	; 0x5dc
- 8002980:	4293      	cmp	r3, r2
- 8002982:	d901      	bls.n	8002988 <sensor_GetLightIntensity+0x14>
- 8002984:	4b04      	ldr	r3, [pc, #16]	; (8002998 <sensor_GetLightIntensity+0x24>)
- 8002986:	e000      	b.n	800298a <sensor_GetLightIntensity+0x16>
+ 800297c:	f5b3 6fe1 	cmp.w	r3, #1800	; 0x708
+ 8002980:	d901      	bls.n	8002986 <sensor_GetLightIntensity+0x12>
+ 8002982:	4b05      	ldr	r3, [pc, #20]	; (8002998 <sensor_GetLightIntensity+0x24>)
+ 8002984:	e000      	b.n	8002988 <sensor_GetLightIntensity+0x14>
 	else return "Strong";
- 8002988:	4b04      	ldr	r3, [pc, #16]	; (800299c <sensor_GetLightIntensity+0x28>)
+ 8002986:	4b05      	ldr	r3, [pc, #20]	; (800299c <sensor_GetLightIntensity+0x28>)
 }
- 800298a:	4618      	mov	r0, r3
- 800298c:	46bd      	mov	sp, r7
- 800298e:	f85d 7b04 	ldr.w	r7, [sp], #4
- 8002992:	4770      	bx	lr
+ 8002988:	4618      	mov	r0, r3
+ 800298a:	46bd      	mov	sp, r7
+ 800298c:	f85d 7b04 	ldr.w	r7, [sp], #4
+ 8002990:	4770      	bx	lr
+ 8002992:	bf00      	nop
  8002994:	20000284 	.word	0x20000284
  8002998:	080097f8 	.word	0x080097f8
  800299c:	08009800 	.word	0x08009800
